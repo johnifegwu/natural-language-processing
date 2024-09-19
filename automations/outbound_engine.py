@@ -81,12 +81,12 @@ def search_via_google(query, api_key, cse_id, num=10):
         return []
 
     search_results = response.json()
-    ceo_links = []
+    result_links = []
 
     for item in search_results.get('items', []):
-        ceo_links.append(item['link'])
+        result_links.append(item['link'])
     
-    return ceo_links
+    return result_links
 
 # Step 1: Rate-limited email scraping function
 @sleep_and_retry
