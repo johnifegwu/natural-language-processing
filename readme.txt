@@ -12,3 +12,7 @@ pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-pyt
 pip install phonenumbers
 pip install scikit-learn
 pip install pandas
+pip install sendgrid
+pip install ratelimit
+pip install validate-email-address
+
