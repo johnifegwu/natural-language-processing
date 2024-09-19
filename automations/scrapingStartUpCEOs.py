@@ -87,7 +87,7 @@ def get_ceo_list():
     google_ceos = search_ceos_via_google("top startup CEOs to follow", api_key, cse_id)
         
     # Print Google List
-    print(f"Here is a from google {google_ceos}")
+    print(f"Here is a from google:\n {google_ceos}")
 
     for ceo_link in google_ceos:
         profiles = scrape_social_media_profiles(ceo_link)
@@ -100,4 +100,5 @@ if __name__ == "__main__":
     ceo_list = get_ceo_list()
     
     # Print or save the result
+    print("Here is the list of startup CEOs:\n")
     print(json.dumps(ceo_list, indent=2))
