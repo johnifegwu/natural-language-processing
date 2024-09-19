@@ -10,9 +10,9 @@ nltk.download('stopwords')
 
 # Reddit API authentication
 def reddit_auth():
-    reddit = praw.Reddit(client_id='your_client_id',
-                         client_secret='your_client_secret',
-                         user_agent='your_user_agent')
+    reddit = praw.Reddit(client_id='WjgGkv2I08zPEOJQ_ePBaA',
+                         client_secret='iE-_WYpcAGVdAW5iuXR8Z7WF6W2uUg',
+                         user_agent='johnifegwu')
     return reddit
 
 # Fetch Reddit posts from the programming subreddit
