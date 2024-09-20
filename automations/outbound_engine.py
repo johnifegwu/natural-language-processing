@@ -19,7 +19,7 @@ EMAIL_REGEX = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
 # Constants
 SENDGRID_API_KEY = 'YOUR_SENDGRID_API_KEY'
 RATE_LIMIT_CALLS = 1  # Number of API calls allowed per minute
-RATE_LIMIT_PERIOD = 20  # Time period in seconds for rate limit
+RATE_LIMIT_PERIOD = 6  # Time period in seconds for rate limit
 
 # Dictionary of roles and associated keywords
 roles_keywords = {
@@ -122,7 +122,7 @@ def search_via_google(query, api_key, cse_id, num=10):
     
     return result_links
 
-# Step 1: Rate-limited email scraping function
+# Rate-limited email scraping function
 @sleep_and_retry
 @limits(calls=RATE_LIMIT_CALLS, period=RATE_LIMIT_PERIOD)
 def scrape_emails(keyword):
@@ -133,8 +133,6 @@ def scrape_emails(keyword):
         cse_id = 'a0b0ec38d8b204551'
         google_result = search_via_google(f"{keyword}", api_key, cse_id)
 
-        print(f"Goegle CEOs {google_result}")
-
         """Loop through the returned links and fetch the pages and try to extract email addresses."""
         # Initialize a set to collect emails
         all_emails = set()
@@ -142,12 +140,13 @@ def scrape_emails(keyword):
             # try to extract email addresses from the website
             all_emails.update(scrape_email_from_website(search_link))
 
+        print(f"Found {len(all_emails)} emails for keyword {keyword}")
         return list(all_emails)
     except requests.exceptions.RequestException as e:
         logging.error(f"Error during scraping for {keyword}: {e}")
         return []
 
-# Step 2: Function to send email using SendGrid
+# Function to send email using SendGrid
 def send_email(recipient_email, subject, content):
     """Send email using SendGrid."""
     sg = SendGridAPIClient(api_key=SENDGRID_API_KEY)
@@ -160,16 +159,17 @@ def send_email(recipient_email, subject, content):
     except Exception as e:
         logging.error(f"Failed to send email to {recipient_email}: {str(e)}")
 
-# Step 3: Worker function for scraping and sending emails in parallel
+# Worker function for scraping and sending emails in parallel
 def scrape_and_send(role, keyword):
     """Scrape emails for a role and send emails to them."""
     emails = scrape_emails(keyword)
+    print(f"Found {len(emails)} emails for {role}")
     for email in emails:
         subject = f"Exclusive Offer for {role}s"
         content = f"Dear {role}, we have a SaaS solution tailored to your needs."
         send_email(email, subject, content)
 
-# Step 4: Orchestrating the process with scaling
+# Orchestrating the process with scaling
 def automate_outbound_engine():
     """Automate scraping and email sending for each role using parallel processing."""
     with ThreadPoolExecutor(max_workers=5) as executor:
