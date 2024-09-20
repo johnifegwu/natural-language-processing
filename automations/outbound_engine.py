@@ -139,8 +139,10 @@ def scrape_emails(keyword):
         for search_link in google_result:
             # try to extract email addresses from the website
             all_emails.update(scrape_email_from_website(search_link))
+            if len(all_emails) > 0:
+                print(f"\nFound {len(all_emails)} emails: {all_emails}\n")
 
-        print(f"Found {len(all_emails)} emails for keyword {keyword}")
+        print(f"\nFound {len(all_emails)} emails for keyword {keyword}\n")
         return list(all_emails)
     except requests.exceptions.RequestException as e:
         logging.error(f"Error during scraping for {keyword}: {e}")
@@ -163,7 +165,7 @@ def send_email(recipient_email, subject, content):
 def scrape_and_send(role, keyword):
     """Scrape emails for a role and send emails to them."""
     emails = scrape_emails(keyword)
-    print(f"Found {len(emails)} emails for {role}")
+    print(f"\nFound {len(emails)} emails for {role}\n")
     for email in emails:
         subject = f"Exclusive Offer for {role}s"
         content = f"Dear {role}, we have a SaaS solution tailored to your needs."
@@ -187,4 +189,4 @@ def automate_outbound_engine():
 if __name__ == "__main__":
     start_time = time.time()
     automate_outbound_engine()
-    logging.info(f"Process completed in {time.time() - start_time} seconds")
+    logging.info(f"\nProcess completed in {time.time() - start_time} seconds\n")
