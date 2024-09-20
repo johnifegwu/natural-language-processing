@@ -5,21 +5,27 @@ import re
 session = HTMLSession()
 
 def scrape_buttons_in_website(url):
-    response = session.get(url) # send a GET request to the url
-    soup = BeautifulSoup(response.content, 'html.parser') # extract the html content
+    response = session.get(url)  # send a GET request to the url
+    soup = BeautifulSoup(response.content, 'html.parser')  # extract the html content
 
-    data = str(soup.find_all('a')) # find all <a> tags
+    # Find all <a> tags
+    links = soup.find_all('a', href=True)
     matches = []
 
-    # Extract links from the HTML content
-    for match in re.finditer('href="/', data):
-        find = data[match.start() + 6:match.end() + 30]
-        find = find[:find.find('"')].strip()
-        
-        # Construct the final URL
-        if find != "/":
-            final_url = f'{url}{find}'
-            matches.append(final_url)
+    # Extract the href values and construct valid URLs
+    for link in links:
+        href = link['href'].strip()
+
+        # Handle relative URLs
+        if href.startswith('/'):
+            final_url = f'{url.rstrip("/")}{href}'
+        # Handle absolute URLs
+        elif href.startswith('http'):
+            final_url = href
+        else:
+            continue  # Skip other formats (like mailto, javascript links, etc.)
+
+        matches.append(final_url)
 
     return matches
 
@@ -31,7 +37,7 @@ def scrape_email_from_website(url):
     for link in matches:
         try:
             response = session.get(link)
-            soup = BeautifulSoup(response.content, 'html.parser')
+            soup = BeautifulSoup(response.text, 'html.parser')
             email_pattern = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
             emails.update(set(re.findall(email_pattern, soup.get_text())))
         except Exception as e:
@@ -40,7 +46,6 @@ def scrape_email_from_website(url):
 
     return list(emails)
 
-
-url = 'https://articture.com/en-gb'
+url = 'https://qoutes.toscrape.com'
 result = scrape_email_from_website(url)
 print(result)
