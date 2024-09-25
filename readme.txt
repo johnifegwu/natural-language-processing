@@ -1,4 +1,4 @@
-python -m venv venv
+python -m venv .venv
 .venv\Scripts\activate  # activate virtual environment
 
 pip install gensim
