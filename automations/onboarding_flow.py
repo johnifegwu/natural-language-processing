@@ -7,7 +7,6 @@ from googleapiclient.discovery import build
 import phonenumbers
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
-from typing import Any, Dict
 
 # Path to the service account key file
 SERVICE_ACCOUNT_FILE = 'C:/Users/Public/goauth2/gentle-platform-436107-d7-ebcec4f3587a.json'
