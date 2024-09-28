@@ -1,5 +1,4 @@
-import os
-import json
+import pandas as pd
 import requests
 from typing import List, Dict, Any
 from google.oauth2 import service_account
@@ -384,20 +383,24 @@ def onboarding_flow():
 
 # Training the ML Model (Naive Bayes)
 def train_ml_model():
-    training_data = [
-        {"name": "John Doe", "email": "john@techcorp.com", "topic": "Technology"},
-        {"name": "Dr. Jane Smith", "email": "jane@healthclinic.com", "topic": "Health"},
-        {"name": "Emily Doe", "email": "emily@university.edu", "topic": "Education"},
-    ]
-    training_features = [f"{data['name']} {data['email']}" for data in training_data]
-    training_labels = [data["topic"] for data in training_data]
-
     try:
+        # Load data from the CSV file
+        df = pd.read_csv("topic_training_data.csv")
+        
+        # Extract training features (name + email) and training labels (topic)
+        training_features = df.apply(lambda row: f"{row['name']} {row['email']}", axis=1).tolist()
+        training_labels = df['topic'].tolist()
+
+        # Vectorize the training features
         vectorizer = TfidfVectorizer()
         X_train = vectorizer.fit_transform(training_features)
+        
+        # Train the Naive Bayes model
         model = MultinomialNB()
         model.fit(X_train, training_labels)
+        
         return model, vectorizer
+    
     except Exception as e:
         print(f"Failed to train ML model: {str(e)}")
         return None, None
