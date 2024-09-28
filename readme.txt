@@ -20,3 +20,4 @@ pip install validate-email-address
 pip install requests_html
 pip install selenium
 pip install linkedin-api
+pip install faker
