@@ -10,7 +10,7 @@ from sklearn.naive_bayes import MultinomialNB
 # Path to the service account key file
 SERVICE_ACCOUNT_FILE = 'C:/Users/Public/goauth2/gentle-platform-436107-d7-ebcec4f3587a.json'
 COMPANY_NAME = "My Company Name"
-COMPANY_EMAIL = "your-email@example.com"
+COMPANY_EMAIL = "info@mickleentity.co.site"
 
 # Creates a list with contacts
 def create_list_with_contacts(api_key: str, server_prefix: str, topic: str, contacts: List[Dict[str, Any]]) -> str:
@@ -358,7 +358,7 @@ def send_campaigns(api_key: str, server_prefix: str, list_id: str, topics: Dict[
 
 # Main onboarding flow
 def onboarding_flow():
-    api_key = "your_mailchimp_api_key"
+    mailchimp_api_key = "13e436e42b21879c13aee33758bfd04a-us11"
     server_prefix = "usX"  # Replace with your server prefix
     
     # Step 1: Fetch contacts from iOS and Gmail
@@ -379,7 +379,7 @@ def onboarding_flow():
     topic_contacts = assign_topics_ml(all_contacts, model, vectorizer)
     
     # Step 5: Send campaigns for each topic by creating lists with contacts
-    send_topic_campaigns(api_key, server_prefix, topic_contacts)
+    send_topic_campaigns(mailchimp_api_key, server_prefix, topic_contacts)
 
 # Training the ML Model (Naive Bayes)
 def train_ml_model():
