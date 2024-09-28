@@ -62,10 +62,22 @@ for _ in range(1000):
     
     # Generate a random name
     name = fake.name()
+
+    # Generate email extension
+    ext = "com"
+    if topic == "Education":
+        ext = random.choice(["edu", "com"])
+    elif topic == "Technology":
+        ext = random.choice(["com", "io", "co", "tech"])
+    elif topic == "Sports":
+        ext = random.choice(["com", "org"])
+    elif topic == "Politics":
+        ext = random.choice(["gov", "org", "com"])
+
     
     # Convert the name into a fake email address with the company domain
     first_name, last_name = name.split()[0].lower(), name.split()[-1].lower()  # use the first and last name
-    email = f"{first_name}.{last_name}@{company.lower()}.com"
+    email = f"{first_name}.{last_name}@{company.lower()}.{ext}"
     
     # Append the record to the training_data list
     training_data.append({"name": name, "email": email, "topic": topic})
