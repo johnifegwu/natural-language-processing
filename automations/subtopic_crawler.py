@@ -3,6 +3,7 @@ import nltk
 from nltk.corpus import stopwords
 from collections import Counter
 import string
+from ed_crypto import decrypt_string
 
 # Download NLTK data
 nltk.download('punkt')
@@ -10,8 +11,11 @@ nltk.download('stopwords')
 
 # Reddit API authentication
 def reddit_auth():
+    password = input("Enter the password: ")
+    encrypted_secret = "yOwRy7_DFYh0udaOjoR5ymdBQUFBQUJtLVZVSnJBdlVYZlVBbXdJZndSWTlHdTRvTnpTUFdscVVFd1c2bEhNak1UNkw5YWJLbGNZcW9ab3dKS0hEczcxRjdvMmN2Vm1DRkFpbHlNLUFZTHQwOTR4R2NPaXRMNEFGSXFCbjdhQUh2TTZ0ZjdvPQ=="
+    secret = decrypt_string(encrypted_secret, password)
     reddit = praw.Reddit(client_id='WjgGkv2I08zPEOJQ_ePBaA',
-                         client_secret='iE-_WYpcAGVdAW5iuXR8Z7WF6W2uUg',
+                         client_secret=f'{secret}',
                          user_agent='johnifegwu')
     return reddit
 

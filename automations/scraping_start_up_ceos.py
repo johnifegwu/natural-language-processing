@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import time
 import json
+from ed_crypto import decrypt_string
 
 # Function to scrape top startup CEOs from a predefined blog or website
 def scrape_ceos_from_site(url):
@@ -82,7 +83,9 @@ def get_ceo_list():
         time.sleep(2)  # Be kind to servers and avoid rate limiting
 
     # Additional search using Google Custom Search API
-    api_key = 'AIzaSyBLR1OzK0FcZXt1s23OcpIBMcbPfBcfl9w'
+    password = input("Enter the password: ")
+    encrypted_api_key = "6bSkDOAeMOuk4SXwdGNJBWdBQUFBQUJtLVZQcHVnSXZTTFY0SzM3R0tDbDNCVTExa1pNZ3dkS3FXM0xISXh5X2NmS1BpU2l2cmNrX3pOTXBHODNPQUEtU01HdzdKNndpc1pNQmxrNndGMktGWHJaSTdMWVVCb1dLdUhjZXRaOUFZMG5tR1d6YlJtN3NhTlFhckxNWUU4anNUYTR1"
+    api_key = decrypt_string(encrypted_api_key, password)
     cse_id = 'a0b0ec38d8b204551'
     google_ceos = search_ceos_via_google("top startup CEOs to follow", api_key, cse_id)
         

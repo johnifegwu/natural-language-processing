@@ -53,7 +53,7 @@ topic_company_map = {
 
 # Generate 1000 unique records
 training_data = []
-for _ in range(1000):
+for _ in range(10000):
     # Select a random topic
     topic = random.choice(list(topic_company_map.keys()))
     
@@ -64,7 +64,6 @@ for _ in range(1000):
     name = fake.name()
 
     # Generate email extension
-    ext = "com"
     if topic == "Education":
         ext = random.choice(["edu", "com"])
     elif topic == "Technology":
@@ -73,6 +72,10 @@ for _ in range(1000):
         ext = random.choice(["com", "org"])
     elif topic == "Politics":
         ext = random.choice(["gov", "org", "com"])
+    elif topic == "Health":
+        ext = random.choice(["com", "health", "org"])
+    else:
+        ext = random.choice(["com", "ng", "uk", "za", "us", "ca", "tw", "jp"])
 
     
     # Convert the name into a fake email address with the company domain
@@ -89,4 +92,4 @@ with open(csv_file, mode='w', newline='', encoding='utf-8') as file:
     writer.writeheader()
     writer.writerows(training_data)
 
-print(f"CSV file '{csv_file}' with 1000 records has been created.")
+print(f"CSV file '{csv_file}' with 10000 records has been created.")

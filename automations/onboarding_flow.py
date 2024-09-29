@@ -6,6 +6,7 @@ from googleapiclient.discovery import build
 import phonenumbers
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
+from ed_crypto import decrypt_string
 
 # Path to the service account key file
 SERVICE_ACCOUNT_FILE = 'C:/Users/Public/goauth2/gentle-platform-436107-d7-ebcec4f3587a.json'
@@ -329,7 +330,7 @@ def normalize_phone_number(phone: str) -> str:
 
 # Machine Learning-based topic assignment
 def assign_topics_ml(contacts: List[Dict[str, Any]], model, vectorizer) -> Dict[str, List[Dict[str, Any]]]:
-    topics = {"Technology": [], "Health": [], "Education": []}
+    topics = {"Technology": [], "Health": [], "Education": [], "Finance": [], "Entertainment": [], "Science": [], "Sports": [], "Politics": []}
     contact_features = [f"{contact['name']} {contact['email']}" for contact in contacts]
 
     try:
@@ -358,8 +359,10 @@ def send_campaigns(api_key: str, server_prefix: str, list_id: str, topics: Dict[
 
 # Main onboarding flow
 def onboarding_flow():
-    mailchimp_api_key = "13e436e42b21879c13aee33758bfd04a-us11"
-    server_prefix = "usX"  # Replace with your server prefix
+    password = input("Enter the password: ")
+    encrypted_mailchimp_key = "SOSBVwQpU83kRrT9sCteaWdBQUFBQUJtLVZKN1hIV2Q3NFB6Umc3STZzYktaYU8zN1E1dDVNN3lybGlEa1d0UU9tdGRSSnVWdFJWR2xkVDM5M29hMXZfN0oxQmEyNmRpMlk4THVJVHVRendmYVpEbXBuUlZES2tLZDY2RDBVTDl2Ty1SdDcwMGJkRlJ1WjBsVWxfS3c0b2NWRlpv"
+    mailchimp_api_key = decrypt_string(encrypted_mailchimp_key, password)
+    server_prefix = "us11"  # Replace with your server prefix
     
     # Step 1: Fetch contacts from iOS and Gmail
     ios_contacts = fetch_ios_contacts()
@@ -385,7 +388,7 @@ def onboarding_flow():
 def train_ml_model():
     try:
         # Load data from the CSV file
-        df = pd.read_csv("topic_training_data.csv")
+        df = pd.read_csv("E:/Johni/Python Projects/natural language processing/automations/topic_training_data.csv")
         
         # Extract training features (name + email) and training labels (topic)
         training_features = df.apply(lambda row: f"{row['name']} {row['email']}", axis=1).tolist()
